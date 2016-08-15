@@ -19,7 +19,7 @@ DdnsCheck() {
 	fi
 	echo $PARAM_BODY
 	HMAC_U=$(echo -n "$API_KEY$URL_D$PARAM_BODY$DATE$SECRET_KEY"|md5sum|cut -d" " -f1)
-	RESULT=$(curl -A $agent -k -s $URL_D --data $PARAM_BODY -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $DATE" -H "API-HMAC: $HMAC_U" -H 'Content-Type: application/json')
+	RESULT=$(curl --noproxy "*" -A $agent -k -s $URL_D --data $PARAM_BODY -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $DATE" -H "API-HMAC: $HMAC_U" -H 'Content-Type: application/json')
 	echo $RESULT
 
 	if [ $(echo -n "$RESULT"|grep -o "message\":\"success\""|wc -l) = 1 ];then
