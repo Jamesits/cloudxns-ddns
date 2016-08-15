@@ -7,9 +7,7 @@ if [ ! -f "$CONFIG" ];then
     exit 1
 fi 
 
-. $CONFIG
-
-local agent="WeicnDdns/1.0(admin@weicn.org)"
+agent="WeiCN DDNS Client"
 
 URL_D="https://www.cloudxns.net/api2/ddns"
 DATE=$(date)
@@ -31,4 +29,4 @@ DdnsCheck() {
 	fi
 }
 
-DdnsCheck "weicn.org"
+. $CONFIG
