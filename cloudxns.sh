@@ -23,7 +23,11 @@ DdnsCheck() {
 	PARAM_BODY="{\"domain\":\"${FULL_DOMAIN}\"}"
 
 	echo "Updating domain ${FULL_DOMAIN} ..." >&2
-	HMAC_U=$(echo -n "$API_KEY$URL_D$PARAM_BODY$DATE$SECRET_KEY"|md5sum|cut -d" " -f1)
+	MD5PROG=md5sum
+	if command -v md5sum >/dev/null 2>&1; then
+		MD5PROG=md5
+	fi
+	HMAC_U=$(echo -n "$API_KEY$URL_D$PARAM_BODY$DATE$SECRET_KEY"|$MD5PROG|cut -d" " -f1)
 	RESULT=$(curl --noproxy "*" -A $agent -k -s $URL_D --data $PARAM_BODY -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $DATE" -H "API-HMAC: $HMAC_U" -H 'Content-Type: application/json')
 	
 	if echo -n "$RESULT" | grep -o "success" >/dev/null 2>&1; then
